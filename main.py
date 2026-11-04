@@ -108,7 +108,13 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
 
-import sounddevice as sd
+# Safe audio import for cloud compatibility
+try:
+    import sounddevice as sd
+except (OSError, ImportError):
+    sd = None
+    print("⚠️ PortAudio not found. Audio features disabled on this node.")
+
 import numpy as np
 from google import genai
 from google.genai import types
